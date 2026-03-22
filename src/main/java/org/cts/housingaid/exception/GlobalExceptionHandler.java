@@ -110,4 +110,18 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(buildResponse(ex.getMessage(), HttpStatus.CONFLICT), HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(IneligibleCitizenException.class)
+    public ResponseEntity<?> handleIneligibleCitizen(IneligibleCitizenException ex){
+        return new ResponseEntity<>(buildResponse(ex.getMessage(), HttpStatus.FORBIDDEN), HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(ProjectMismatchException.class)
+    public ResponseEntity<?> handleProjectMismatch(ProjectMismatchException ex){
+        return new ResponseEntity<>(buildResponse(ex.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(UnitUnavailableException.class)
+    public ResponseEntity<?> handleUnitUnavailable(UnitUnavailableException ex){
+        return new ResponseEntity<>(buildResponse(ex.getMessage(), HttpStatus.CONFLICT), HttpStatus.CONFLICT);
+    }
 }

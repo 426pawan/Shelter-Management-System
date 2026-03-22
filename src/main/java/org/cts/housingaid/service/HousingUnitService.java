@@ -16,4 +16,5 @@ public interface HousingUnitService {
 
     List<HousingUnitDTO> getAllHousingUnits() throws HousingUnitNotFoundException;
 
+    Object getAllData();
 }

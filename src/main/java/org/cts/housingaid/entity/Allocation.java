@@ -12,7 +12,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(schema = "Allocation")
 public class Allocation {
 
     @Id
@@ -37,5 +36,9 @@ public class Allocation {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "housingUnitId", insertable = false, updatable = false)
     private HousingUnit housingUnit;
+
+    @OneToOne
+    @JoinColumn(name = "citizen_id")
+    private Citizen citizen;
 
 }

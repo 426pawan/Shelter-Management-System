@@ -26,7 +26,7 @@ public class HousingUnitServiceImpl implements HousingUnitService {
     @Override
     public void updateHousingUnit(HousingUnitDTO housingUnitDTO) throws HousingUnitNotFoundException {
         Optional<HousingUnit> optionalHousingUnit = housingUnitRepository.findById(housingUnitDTO.getHousingUnitId());
-        if(optionalHousingUnit.isEmpty()){
+        if (optionalHousingUnit.isEmpty()) {
             throw new HousingUnitNotFoundException(HOUSING_UNIT_NOT_FOUND);
         }
         HousingUnit existingHousingUnit = optionalHousingUnit.get();
@@ -43,7 +43,7 @@ public class HousingUnitServiceImpl implements HousingUnitService {
     @Override
     public List<HousingUnitDTO> getSearchedByHousingUnitIdOrHousingUnitLocationOrHousingUnitType(Long housingUnitId, String housingUnitLocation, HousingUnitType housingUnitType) throws HousingUnitNotFoundException {
         List<HousingUnit> housingUnits = housingUnitRepository.findByHousingUnitIdOrHousingUnitLocationOrHousingUnitType(housingUnitId, housingUnitLocation, housingUnitType);
-        if(housingUnits.isEmpty()){
+        if (housingUnits.isEmpty()) {
             throw new HousingUnitNotFoundException(EMPTY_DATA);
         }
         return housingUnits.stream().map(unit -> modelMapper.map(unit, HousingUnitDTO.class)).toList();
@@ -52,10 +52,15 @@ public class HousingUnitServiceImpl implements HousingUnitService {
     @Override
     public List<HousingUnitDTO> getAllHousingUnits() throws HousingUnitNotFoundException {
         List<HousingUnit> housingUnits = housingUnitRepository.findAll();
-        if(housingUnits.isEmpty()){
+        if (housingUnits.isEmpty()) {
             throw new HousingUnitNotFoundException(EMPTY_DATA);
         }
         return housingUnits.stream().map(unit -> modelMapper.map(unit, HousingUnitDTO.class)).toList();
+    }
+
+    @Override
+    public Object getAllData() {
+        return housingUnitRepository.findAll();
     }
 
 }
