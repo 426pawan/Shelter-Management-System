@@ -1,18 +1,17 @@
 package org.cts.housingaid.service;
 
 import org.cts.housingaid.dto.HousingProjectDTO;
+import org.cts.housingaid.exception.HousingProjectNotFoundException;
 
 import java.util.List;
 
-
 public interface HousingProjectService {
 
+    void updateHousingProject(HousingProjectDTO housingProjectDTO) throws HousingProjectNotFoundException;
 
-    public void updateHousingProject(HousingProjectDTO housingProjectDTO);
+    void createHousingProject(HousingProjectDTO housingProjectDTO);
 
-    public void createHousingProject(HousingProjectDTO housingProjectDTO);
+    List<HousingProjectDTO> getSearchedByHousingProjectIdORHousingProjectTitle(Long housingProjectId, String housingProjectTitle) throws HousingProjectNotFoundException;
 
-    public List<HousingProjectDTO> getSearchedByHousingProjectIdORHousingProjectTitle(Long housingProjectId, String housingProjectTitle);
-
-    public List<HousingProjectDTO> getAllHousingProjects();
+    List<HousingProjectDTO> getAllHousingProjects() throws HousingProjectNotFoundException;
 }

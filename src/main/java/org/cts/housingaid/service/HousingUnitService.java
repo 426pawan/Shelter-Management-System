@@ -7,12 +7,13 @@ import org.cts.housingaid.exception.HousingUnitNotFoundException;
 import java.util.List;
 
 public interface HousingUnitService {
-    void createHousingUnit(HousingUnitDTO housingUnitDTO);
 
     void updateHousingUnit(HousingUnitDTO housingUnitDTO) throws HousingUnitNotFoundException;
 
-    List<HousingUnitDTO> getSearchedByHousingUnitIdOrHousingUnitLocationOrHousingUnitType(
-            Long id, String location, HousingUnitType type) throws HousingUnitNotFoundException;
+    void createHousingUnit(HousingUnitDTO housingUnitDTO);
 
-    List<HousingUnitDTO> getAllData() throws HousingUnitNotFoundException;
+    List<HousingUnitDTO> getSearchedByHousingUnitIdOrHousingUnitLocationOrHousingUnitType(Long housingUnitId, String housingUnitLocation, HousingUnitType housingUnitType) throws HousingUnitNotFoundException;
+
+    List<HousingUnitDTO> getAllHousingUnits() throws HousingUnitNotFoundException;
+
 }

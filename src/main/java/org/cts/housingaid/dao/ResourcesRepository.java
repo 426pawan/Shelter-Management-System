@@ -11,8 +11,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ResourcesRepository extends JpaRepository<Resources, Integer> {
+public interface ResourcesRepository extends JpaRepository<Resources, Long> {
 
-    @Query("SELECT r FROM Resources r WHERE r.resourcesId = :id OR r.resourcesType = :type OR r.resourcesStatus = :status")
+    @Query("select r from Resources r where r.resourcesId = :id or r.resourcesType = :type or r.resourcesStatus = :status")
     List<Resources> findByResourcesIdOrResourcesTypeOrResourcesStatus(@Param("id") Long resourcesId, @Param("type") ResourcesType resourcesType, @Param("status") ResourcesStatus resourcesStatus);
+
 }

@@ -9,15 +9,13 @@ import org.cts.housingaid.exception.ResourcesNotFoundException;
 import java.util.List;
 
 public interface ResourcesService {
-    void createResources(ResourcesDTO resourcesDTO)
-            throws HousingProjectNotFoundException;
 
-    void updateResources(ResourcesDTO resourcesDTO)
-            throws ResourcesNotFoundException, HousingProjectNotFoundException;
+    void updateResources(ResourcesDTO resourcesDTO) throws ResourcesNotFoundException, HousingProjectNotFoundException;
 
-    List<ResourcesDTO> getSearchedByResourcesIdOrResourcesTypeOrResourcesStatus(
-            Long id, ResourcesType type, ResourcesStatus status)
-            throws ResourcesNotFoundException;
+    void createResources(ResourcesDTO resourcesDTO) throws HousingProjectNotFoundException;
 
-    List<ResourcesDTO> getAllData() throws ResourcesNotFoundException;
+    List<ResourcesDTO> getSearchedByResourcesIdOrResourcesTypeOrResourcesStatus(Long resourcesId, ResourcesType resourcesType, ResourcesStatus resourcesStatus) throws ResourcesNotFoundException;
+
+    List<ResourcesDTO> getAllResources() throws ResourcesNotFoundException;
+
 }

@@ -1,18 +1,19 @@
 package org.cts.housingaid.serviceimpl;
 
+import lombok.AllArgsConstructor;
 import org.cts.housingaid.dao.HousingUnitRepository;
 import org.cts.housingaid.dto.HousingUnitDTO;
 import org.cts.housingaid.entity.HousingUnit;
 import org.cts.housingaid.enums.HousingUnitType;
 import org.cts.housingaid.exception.HousingUnitNotFoundException;
 import org.cts.housingaid.service.HousingUnitService;
-import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
-import static org.cts.housingaid.util.ExceptionConstants.EMPTY_PROJECT;
+import static org.cts.housingaid.util.ExceptionConstants.EMPTY_DATA;
 import static org.cts.housingaid.util.ExceptionConstants.HOUSING_UNIT_NOT_FOUND;
 
 @Service
@@ -22,36 +23,39 @@ public class HousingUnitServiceImpl implements HousingUnitService {
     private final HousingUnitRepository housingUnitRepository;
     private final ModelMapper modelMapper;
 
+    @Override
+    public void updateHousingUnit(HousingUnitDTO housingUnitDTO) throws HousingUnitNotFoundException {
+        Optional<HousingUnit> optionalHousingUnit = housingUnitRepository.findById(housingUnitDTO.getHousingUnitId());
+        if(optionalHousingUnit.isEmpty()){
+            throw new HousingUnitNotFoundException(HOUSING_UNIT_NOT_FOUND);
+        }
+        HousingUnit existingHousingUnit = optionalHousingUnit.get();
+        modelMapper.map(housingUnitDTO, existingHousingUnit);
+        housingUnitRepository.save(existingHousingUnit);
+    }
+
+    @Override
     public void createHousingUnit(HousingUnitDTO housingUnitDTO) {
         HousingUnit housingUnit = modelMapper.map(housingUnitDTO, HousingUnit.class);
         housingUnitRepository.save(housingUnit);
     }
 
-    public void updateHousingUnit(HousingUnitDTO housingUnitDTO) throws HousingUnitNotFoundException {
-        if (!housingUnitRepository.existsById(Math.toIntExact(housingUnitDTO.getHousingUnitId()))) {
-            throw new HousingUnitNotFoundException(HOUSING_UNIT_NOT_FOUND);
+    @Override
+    public List<HousingUnitDTO> getSearchedByHousingUnitIdOrHousingUnitLocationOrHousingUnitType(Long housingUnitId, String housingUnitLocation, HousingUnitType housingUnitType) throws HousingUnitNotFoundException {
+        List<HousingUnit> housingUnits = housingUnitRepository.findByHousingUnitIdOrHousingUnitLocationOrHousingUnitType(housingUnitId, housingUnitLocation, housingUnitType);
+        if(housingUnits.isEmpty()){
+            throw new HousingUnitNotFoundException(EMPTY_DATA);
         }
-        HousingUnit housingUnit = modelMapper.map(housingUnitDTO, HousingUnit.class);
-        housingUnitRepository.save(housingUnit);
+        return housingUnits.stream().map(unit -> modelMapper.map(unit, HousingUnitDTO.class)).toList();
     }
 
-    public List<HousingUnitDTO> getSearchedByHousingUnitIdOrHousingUnitLocationOrHousingUnitType(Long id, String location, HousingUnitType type) throws HousingUnitNotFoundException {
-        List<HousingUnit> list = housingUnitRepository.findByHousingUnitIdOrHousingUnitLocationOrHousingUnitType(id, location, type);
-        if (list.isEmpty()) {
-            throw new HousingUnitNotFoundException(EMPTY_PROJECT);
+    @Override
+    public List<HousingUnitDTO> getAllHousingUnits() throws HousingUnitNotFoundException {
+        List<HousingUnit> housingUnits = housingUnitRepository.findAll();
+        if(housingUnits.isEmpty()){
+            throw new HousingUnitNotFoundException(EMPTY_DATA);
         }
-        return list.stream()
-                .map(unit -> modelMapper.map(unit, HousingUnitDTO.class))
-                .toList();
+        return housingUnits.stream().map(unit -> modelMapper.map(unit, HousingUnitDTO.class)).toList();
     }
 
-    public List<HousingUnitDTO> getAllData() throws HousingUnitNotFoundException {
-        List<HousingUnit> list = housingUnitRepository.findAll();
-        if (list.isEmpty()) {
-            throw new HousingUnitNotFoundException(EMPTY_PROJECT);
-        }
-        return list.stream()
-                .map(unit -> modelMapper.map(unit, HousingUnitDTO.class))
-                .toList();
-    }
 }
